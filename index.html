@@ -83,48 +83,213 @@
   .category-page { display: none; }
   .category-page.active { display: block; }
 
-  /* ---------- Model pill selector ---------- */
-  .model-pills {
+  /* ---------- Model select trigger (opens bottom sheet) ---------- */
+  .model-select-trigger {
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 2px 2px 14px;
-  }
-
-  .model-pill {
-    flex: 0 0 auto;
-    font-family: inherit;
-    font-size: 13.5px;
-    font-weight: 700;
-    color: var(--sub-ink);
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     background: #FFFFFF;
     border: 1.5px solid #E3DFD4;
-    border-radius: 999px;
-    padding: 11px 18px;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    font-family: inherit;
+    text-align: left;
     cursor: pointer;
-    white-space: nowrap;
     transition: transform 0.15s ease;
   }
 
-  .model-pill.active {
-    background: var(--accent-text);
-    border-color: var(--accent-text);
-    color: #FFFFFF;
-  }
+  .model-select-trigger:active { transform: scale(0.98); }
 
-  .model-pill:active { transform: scale(0.96); }
-
-  .model-pill:focus-visible {
+  .model-select-trigger:focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .model-pill { transition: none; }
+  .model-select-trigger .trigger-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
   }
+
+  .model-select-trigger .trigger-hint {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--sub-ink);
+  }
+
+  .model-select-trigger .trigger-name {
+    font-size: 16.5px;
+    font-weight: 900;
+    color: var(--ink);
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .model-select-trigger .trigger-chevron {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .model-select-trigger .trigger-chevron i {
+    font-size: 16px;
+    color: var(--accent-text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .model-select-trigger { transition: none; }
+  }
+
+  /* ---------- Model picker bottom sheet ---------- */
+  .sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.42);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 40;
+  }
+
+  .sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+
+  body.sheet-open { overflow: hidden; }
+
+  .model-sheet {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    width: 100%;
+    max-width: var(--phone-w);
+    max-height: 72vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--body-bg);
+    border-radius: 20px 20px 0 0;
+    padding-top: 10px;
+    padding-bottom: max(14px, env(safe-area-inset-bottom));
+    box-shadow: 0 -10px 34px rgba(26, 26, 26, 0.16);
+    transform: translate(-50%, 100%);
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 41;
+  }
+
+  .model-sheet.open { transform: translate(-50%, 0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sheet-backdrop, .model-sheet { transition: none; }
+  }
+
+  .sheet-handle {
+    width: 36px;
+    height: 4px;
+    border-radius: 999px;
+    background: #DFDACD;
+    margin: 0 auto 10px;
+  }
+
+  .sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px 12px;
+    border-bottom: 1px solid #ECE9E1;
+    flex: 0 0 auto;
+  }
+
+  .sheet-header span {
+    font-size: 15px;
+    font-weight: 900;
+  }
+
+  .sheet-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #F1EEE5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .sheet-close i { font-size: 16px; color: var(--sub-ink); }
+
+  .sheet-close:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  .sheet-list {
+    overflow-y: auto;
+    padding: 6px 12px 4px;
+  }
+
+  .sheet-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: none;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 10px;
+    min-height: 44px;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .sheet-item:active { background: #F1EEE5; }
+  .sheet-item.active { background: var(--accent-bg); }
+
+  .sheet-item:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -2px;
+  }
+
+  .sheet-item .item-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sheet-item .item-name {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+
+  .sheet-item .item-tagline {
+    font-size: 11.5px;
+    color: var(--sub-ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sheet-item .item-check {
+    flex: 0 0 auto;
+    font-size: 18px;
+    color: var(--accent-text);
+    opacity: 0;
+  }
+
+  .sheet-item.active .item-check { opacity: 1; }
 
   /* ---------- Model detail panel ---------- */
   .model-panel { display: none; animation: fadeIn 0.3s ease-out; }
@@ -363,25 +528,25 @@
 
   <!-- ================= Mac ================= -->
   <section class="category-page cat-mac active" data-category="mac">
-    <div class="model-pills" data-pills="mac"></div>
+    <button type="button" class="model-select-trigger" data-selector="mac"></button>
     <div data-panels="mac"></div>
   </section>
 
   <!-- ================= iPad ================= -->
   <section class="category-page cat-ipad" data-category="ipad">
-    <div class="model-pills" data-pills="ipad"></div>
+    <button type="button" class="model-select-trigger" data-selector="ipad"></button>
     <div data-panels="ipad"></div>
   </section>
 
   <!-- ================= iPhone ================= -->
   <section class="category-page cat-iphone" data-category="iphone">
-    <div class="model-pills" data-pills="iphone"></div>
+    <button type="button" class="model-select-trigger" data-selector="iphone"></button>
     <div data-panels="iphone"></div>
   </section>
 
   <!-- ================= Apple Watch ================= -->
   <section class="category-page cat-watch" data-category="watch">
-    <div class="model-pills" data-pills="watch"></div>
+    <button type="button" class="model-select-trigger" data-selector="watch"></button>
     <div data-panels="watch"></div>
   </section>
 
@@ -403,6 +568,18 @@
     <i class="ph ph-watch"></i>Watch
   </button>
 </nav>
+
+<div class="sheet-backdrop" data-sheet-backdrop></div>
+<div class="model-sheet" data-model-sheet>
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <span data-sheet-title></span>
+    <button type="button" class="sheet-close" data-sheet-close aria-label="關閉">
+      <i class="ph ph-x"></i>
+    </button>
+  </div>
+  <div class="sheet-list" data-sheet-list></div>
+</div>
 
 <script>
   const DATA = {
@@ -672,15 +849,23 @@
   };
 
   const CATEGORIES = ["mac", "ipad", "iphone", "watch"];
+  const CATEGORY_LABEL = { mac: "Mac", ipad: "iPad", iphone: "iPhone", watch: "Apple Watch" };
+  const currentModel = {};
 
   function renderCategory(cat) {
-    const pillsEl = document.querySelector(`.model-pills[data-pills="${cat}"]`);
+    const triggerEl = document.querySelector(`[data-selector="${cat}"]`);
     const panelsEl = document.querySelector(`[data-panels="${cat}"]`);
     const models = DATA[cat];
+    currentModel[cat] = models[0].id;
 
-    pillsEl.innerHTML = models.map((m, i) =>
-      `<button type="button" class="model-pill${i === 0 ? " active" : ""}" data-model="${m.id}">${m.name}</button>`
-    ).join("");
+    triggerEl.innerHTML = `
+      <span class="trigger-text">
+        <span class="trigger-hint">${models.length} 款機型 · 點選切換</span>
+        <span class="trigger-name" data-trigger-name>${models[0].name}</span>
+      </span>
+      <span class="trigger-chevron"><i class="ph ph-caret-down"></i></span>
+    `;
+    triggerEl.addEventListener("click", () => openSheet(cat));
 
     panelsEl.innerHTML = models.map((m, i) => `
       <div class="model-panel${i === 0 ? " active" : ""}" data-panel="${m.id}">
@@ -721,19 +906,72 @@
         </div>
       </div>
     `).join("");
-
-    pillsEl.querySelectorAll(".model-pill").forEach(pill => {
-      pill.addEventListener("click", () => {
-        pillsEl.querySelectorAll(".model-pill").forEach(p => p.classList.toggle("active", p === pill));
-        panelsEl.querySelectorAll(".model-panel").forEach(p =>
-          p.classList.toggle("active", p.dataset.panel === pill.dataset.model)
-        );
-        window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
-      });
-    });
   }
 
   CATEGORIES.forEach(renderCategory);
+
+  const sheetBackdrop = document.querySelector("[data-sheet-backdrop]");
+  const modelSheet = document.querySelector("[data-model-sheet]");
+  const sheetTitleEl = document.querySelector("[data-sheet-title]");
+  const sheetListEl = document.querySelector("[data-sheet-list]");
+  let activeSheetCat = null;
+
+  function openSheet(cat) {
+    activeSheetCat = cat;
+    const models = DATA[cat];
+
+    modelSheet.className = `model-sheet cat-${cat}`;
+    sheetTitleEl.textContent = `選擇 ${CATEGORY_LABEL[cat]} 機型`;
+    sheetListEl.innerHTML = models.map(m => `
+      <button type="button" class="sheet-item${m.id === currentModel[cat] ? " active" : ""}" data-select-model="${m.id}">
+        <span class="item-text">
+          <span class="item-name">${m.name}</span>
+          <span class="item-tagline">${m.tagline}</span>
+        </span>
+        <i class="ph ph-check item-check"></i>
+      </button>
+    `).join("");
+
+    document.body.classList.add("sheet-open");
+    requestAnimationFrame(() => {
+      sheetBackdrop.classList.add("open");
+      modelSheet.classList.add("open");
+    });
+  }
+
+  function closeSheet() {
+    sheetBackdrop.classList.remove("open");
+    modelSheet.classList.remove("open");
+    document.body.classList.remove("sheet-open");
+    activeSheetCat = null;
+  }
+
+  function selectModel(cat, modelId) {
+    currentModel[cat] = modelId;
+    const model = DATA[cat].find(m => m.id === modelId);
+    const panelsEl = document.querySelector(`[data-panels="${cat}"]`);
+    const triggerEl = document.querySelector(`[data-selector="${cat}"]`);
+
+    panelsEl.querySelectorAll(".model-panel").forEach(p =>
+      p.classList.toggle("active", p.dataset.panel === modelId)
+    );
+    triggerEl.querySelector("[data-trigger-name]").textContent = model.name;
+    closeSheet();
+    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  }
+
+  sheetBackdrop.addEventListener("click", closeSheet);
+  document.querySelector("[data-sheet-close]").addEventListener("click", closeSheet);
+
+  sheetListEl.addEventListener("click", (e) => {
+    const item = e.target.closest(".sheet-item");
+    if (!item || !activeSheetCat) return;
+    selectModel(activeSheetCat, item.dataset.selectModel);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && activeSheetCat) closeSheet();
+  });
 
   const catTabs = document.querySelectorAll("nav.tabbar .cat-tab");
   const catPages = document.querySelectorAll(".category-page");
