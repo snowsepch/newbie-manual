@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>新人快速上手手冊 | Apple Shop</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+<style>
+  :root {
+    --header-bg: #F7F4ED;      /* 米白，INKLO 主視覺 header 底色 */
+    --body-bg: #FBFAF6;        /* 極淡米白，內容區底色 */
+    --frame-bg: #EAE6DB;       /* 手機框外側的桌面底色，只在寬螢幕預覽時可見 */
+    --ink: #1A1A1A;            /* 主要文字／硬邊線 */
+    --sub-ink: #6B6B70;        /* 次要說明文字 */
+    --tertiary-ink: #9B9B9F;   /* 最弱層級文字，如規格單位 */
+    --ring: #1D4ED8;           /* 鍵盤聚焦框，取鮮明藍避免與各類別強調色衝突 */
+    --tabbar-h: 76px;          /* 底部分類列高度，比對純手機單手操作再放大一點 */
+    --phone-w: 430px;          /* 鎖定 iPhone Pro Max 寬度比例，任何裝置開啟都維持手機版面 */
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--frame-bg);
+    color: var(--ink);
+    font-family: "Noto Sans TC", -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+  }
+
+  .app-frame {
+    width: 100%;
+    max-width: var(--phone-w);
+    min-height: 100dvh;
+    background: var(--body-bg);
+    padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+    position: relative;
+  }
+
+  @media (min-width: 431px) {
+    .app-frame {
+      border-left: 1.5px solid #DFDACD;
+      border-right: 1.5px solid #DFDACD;
+    }
+  }
+
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  /* ---------- Header ---------- */
+  header {
+    background: var(--header-bg);
+    border-bottom: 2px solid var(--ink);
+    padding: max(18px, env(safe-area-inset-top)) 20px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  header h1 {
+    margin: 0 0 3px;
+    font-size: 19px;
+    font-weight: 900;
+    letter-spacing: -0.3px;
+  }
+
+  header p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--sub-ink);
+  }
+
+  /* ---------- Category page ---------- */
+  main {
+    padding: 16px 16px 32px;
+  }
+
+  .category-page { display: none; }
+  .category-page.active { display: block; }
+
+  /* ---------- Model pill selector ---------- */
+  .model-pills {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding: 2px 2px 14px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .model-pills::-webkit-scrollbar { display: none; }
+
+  .model-pill {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--sub-ink);
+    background: #FFFFFF;
+    border: 1.5px solid #E3DFD4;
+    border-radius: 999px;
+    padding: 11px 18px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .model-pill.active {
+    background: var(--accent-text);
+    border-color: var(--accent-text);
+    color: #FFFFFF;
+  }
+
+  .model-pill:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  /* ---------- Model detail panel ---------- */
+  .model-panel { display: none; animation: fadeIn 0.3s ease-out; }
+  .model-panel.active { display: block; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .model-panel { animation: none; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .model-hero {
+    background: var(--accent-deep);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+
+  .model-hero h2 {
+    margin: 0 0 3px;
+    font-size: 21px;
+    font-weight: 900;
+    color: #FFFFFF;
+    letter-spacing: -0.3px;
+  }
+
+  .model-hero span {
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* spec chip row */
+  .spec-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .spec-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 7px 11px;
+    font-size: 12px;
+  }
+
+  .spec-chip i { font-size: 15px; color: var(--accent-text); }
+  .spec-chip .spec-label { color: var(--tertiary-ink); }
+  .spec-chip .spec-value { font-weight: 700; color: var(--ink); }
+
+  /* ---------- Section labels ---------- */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--sub-ink);
+    margin: 20px 0 10px;
+  }
+
+  .section-label i { font-size: 15px; color: var(--accent-text); }
+
+  /* ---------- Feature tiles (3 記憶關鍵詞) ---------- */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .feature-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 7px;
+    min-height: 100px;
+    padding: 14px 6px 12px;
+    border-radius: 14px;
+    background: #FFFFFF;
+    border: 1px solid #ECE9E1;
+  }
+
+  .feature-tile .tile-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--accent-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .feature-tile .tile-icon i {
+    font-size: 19px;
+    color: var(--accent-text);
+  }
+
+  .feature-tile strong {
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1.3;
+    letter-spacing: -0.2px;
+  }
+
+  .feature-tile span {
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--sub-ink);
+  }
+
+  /* ---------- Demo scenario ---------- */
+  .demo-box {
+    background: #FFFFFF;
+    border: 1.5px solid var(--ink);
+    border-radius: 12px;
+    padding: 15px 16px;
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+
+  /* ---------- Script quote ---------- */
+  .script-box {
+    background: var(--accent-bg);
+    border-radius: 12px;
+    padding: 16px 16px 14px;
+  }
+
+  .script-box p {
+    margin: 0 0 12px;
+    font-size: 14px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--ink);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 999px;
+    padding: 10px 18px;
+    min-height: 42px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .copy-btn:active { transform: scale(0.97); }
+
+  .copy-btn:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  .copy-btn.copied { background: var(--accent-text); }
+
+  /* ---------- Bottom tab bar ---------- */
+  nav.tabbar {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 100%;
+    max-width: var(--phone-w);
+    height: var(--tabbar-h);
+    padding-bottom: env(safe-area-inset-bottom);
+    background: var(--header-bg);
+    border-top: 2px solid var(--ink);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    z-index: 30;
+  }
+
+  @media (min-width: 431px) {
+    nav.tabbar {
+      border-left: 1.5px solid #DFDACD;
+      border-right: 1.5px solid #DFDACD;
+    }
+  }
+
+  nav.tabbar button {
+    background: none;
+    border: none;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: var(--sub-ink);
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 6px 0 0;
+  }
+
+  nav.tabbar button i { font-size: 24px; }
+
+  nav.tabbar button:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -2px;
+  }
+
+  nav.tabbar button.active { color: var(--tab-active-color, var(--ink)); }
+
+  /* per-category accent tokens：--accent-bg 淡底(圖示晶片用)、--accent-text 飽和鮮彩(圖示/強調字，深度足以承載白字)、--accent-deep 濃郁寶石色卡底(hero用) */
+  .cat-mac    { --accent-bg:#E1EAFE; --accent-text:#1D4ED8; --accent-deep:#1731A6; }
+  .cat-ipad   { --accent-bg:#DBF3E4; --accent-text:#0E8A47; --accent-deep:#0B6B37; }
+  .cat-iphone { --accent-bg:#FDE3D2; --accent-text:#B23A0A; --accent-deep:#922F08; }
+  .cat-watch  { --accent-bg:#FBDEEC; --accent-text:#B0185C; --accent-deep:#8C1249; }
+</style>
+</head>
+<body>
+
+<div class="app-frame">
+
+<header>
+  <h1>新人快速上手手冊</h1>
+  <p>17 款現役機型 · 30 秒快速記憶 · 隨看隨用</p>
+</header>
+
+<main>
+
+  <!-- ================= Mac ================= -->
+  <section class="category-page cat-mac active" data-category="mac">
+    <div class="model-pills" data-pills="mac"></div>
+    <div data-panels="mac"></div>
+  </section>
+
+  <!-- ================= iPad ================= -->
+  <section class="category-page cat-ipad" data-category="ipad">
+    <div class="model-pills" data-pills="ipad"></div>
+    <div data-panels="ipad"></div>
+  </section>
+
+  <!-- ================= iPhone ================= -->
+  <section class="category-page cat-iphone" data-category="iphone">
+    <div class="model-pills" data-pills="iphone"></div>
+    <div data-panels="iphone"></div>
+  </section>
+
+  <!-- ================= Apple Watch ================= -->
+  <section class="category-page cat-watch" data-category="watch">
+    <div class="model-pills" data-pills="watch"></div>
+    <div data-panels="watch"></div>
+  </section>
+
+</main>
+
+</div>
+
+<nav class="tabbar">
+  <button type="button" class="cat-tab active" data-target="mac" style="--tab-active-color:#1D4ED8">
+    <i class="ph ph-laptop"></i>Mac
+  </button>
+  <button type="button" class="cat-tab" data-target="ipad" style="--tab-active-color:#0E8A47">
+    <i class="ph ph-device-tablet"></i>iPad
+  </button>
+  <button type="button" class="cat-tab" data-target="iphone" style="--tab-active-color:#B23A0A">
+    <i class="ph ph-device-mobile"></i>iPhone
+  </button>
+  <button type="button" class="cat-tab" data-target="watch" style="--tab-active-color:#B0185C">
+    <i class="ph ph-watch"></i>Watch
+  </button>
+</nav>
+
+<script>
+  const DATA = {
+    mac: [
+      {
+        id: "macbook-air", name: "MacBook Air", tagline: "輕薄好帶 · M5 晶片 · 續航一整天",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "M5" },
+          { icon: "ph-battery-full", label: "續航", value: "最長 18 小時" },
+          { icon: "ph-scales", label: "重量", value: "1.23 kg" }
+        ],
+        keywords: [
+          { icon: "ph-feather", title: "輕薄好帶", caption: "1.23kg・無風扇安靜" },
+          { icon: "ph-battery-charging", title: "續航一整天", caption: "最長 18 小時" },
+          { icon: "ph-cpu", title: "效能穩定", caption: "M5 晶片・日常應用順" }
+        ],
+        demo: "現場翻開機身讓客人感受重量跟厚度，順手開啟幾個 App 切換示範開機速度，強調無風扇運作安靜不發燙。",
+        script: "這台 MacBook Air 只有 1.23 公斤，單手就能拿，而且是無風扇設計，運作起來很安靜也不會燙手。電池最長可以撐 18 小時，一整天工作或上課不用一直找插座充電。裡面搭載新一代 M5 晶片，文書處理、修圖、剪片這些日常用途都很順，對學生跟一般用戶來說是很平衡的選擇。"
+      },
+      {
+        id: "macbook-pro", name: "MacBook Pro", tagline: "效能分級可選 · XDR 螢幕 · 續航更長",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "M5 / M5 Pro / M5 Max" },
+          { icon: "ph-battery-full", label: "續航", value: "最長 24 小時" },
+          { icon: "ph-monitor", label: "螢幕", value: "Liquid Retina XDR" }
+        ],
+        keywords: [
+          { icon: "ph-sliders-horizontal", title: "效能分級", caption: "M5 / Pro / Max 可選" },
+          { icon: "ph-monitor", title: "XDR 螢幕", caption: "亮度對比更專業" },
+          { icon: "ph-plugs", title: "接埠齊全", caption: "HDMI・SD卡・24hr續航" }
+        ],
+        demo: "現場播放一段高畫質影片或照片，展示 XDR 螢幕的亮度與對比表現，並秀出側邊的 HDMI、SD 卡插槽。",
+        script: "MacBook Pro 是效能更強的專業機種，晶片從 M5 一路到 M5 Pro、M5 Max 可以依工作強度選擇，像是剪片、3D 算圖、AI 開發這些吃重的工作都能應付。螢幕用的是 Liquid Retina XDR，亮度跟色彩表現比一般筆電更專業。電池最長可以撐 24 小時，而且比 Air 多了 HDMI、SD 卡插槽這些接埠，不太需要額外買轉接器。"
+      },
+      {
+        id: "macbook-neo", name: "MacBook Neo", tagline: "入門價格 · 四色機身 · 新手友善",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "A18 Pro" },
+          { icon: "ph-battery-full", label: "續航", value: "最長 16 小時" },
+          { icon: "ph-palette", label: "顏色", value: "4 色可選" }
+        ],
+        keywords: [
+          { icon: "ph-currency-circle-dollar", title: "入門價格", caption: "更多人的第一台Mac" },
+          { icon: "ph-palette", title: "四色機身", caption: "銀・粉・黃・靛青" },
+          { icon: "ph-graduation-cap", title: "新手友善", caption: "操作介面一致好學" }
+        ],
+        demo: "現場排開四款機身顏色讓客人挑喜歡的顏色，並示範觸控式軌跡板基本手勢，強調第一次用 Mac 也能快速上手。",
+        script: "如果客人想入手 Mac 但預算有限，MacBook Neo 是很適合的選擇，主打更親民的價格，一樣有蘋果的操作體驗跟系統支援。機身有四種顏色可以選，銀色、胭粉色、青橘黃色跟靛青色，外觀滿活潑的。續航最長可以到 16 小時，日常上網、文書、追劇這些用途都沒問題，很適合學生或第一次接觸 Mac 的人。"
+      },
+      {
+        id: "imac", name: "iMac", tagline: "一體成型 · 24 吋 4.5K · 七色機身",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "M4" },
+          { icon: "ph-monitor", label: "螢幕", value: "24 吋 4.5K" },
+          { icon: "ph-palette", label: "顏色", value: "7 色可選" }
+        ],
+        keywords: [
+          { icon: "ph-monitor", title: "一體成型", caption: "24吋4.5K免外接螢幕" },
+          { icon: "ph-palette", title: "七色機身", caption: "鍵盤滑鼠同色系" },
+          { icon: "ph-house", title: "適合定點", caption: "文書・理財・輕創作" }
+        ],
+        demo: "現場展示七色機身選色卡，秀出同色系鍵盤滑鼠，強調免另外買螢幕的一體式設計。",
+        script: "iMac 最大的特色是螢幕跟主機是一體的，24 吋 4.5K 螢幕內建，不用另外買螢幕，買回家插電就能用。機身有七種顏色可以選，鍵盤滑鼠還是同色系，擺在家裡或辦公室都好看。適合有固定工作空間的人，像是家庭理財、文書處理、學生做報告都很適合。"
+      },
+      {
+        id: "mac-mini", name: "Mac mini", tagline: "體積迷你 · 效能不打折 · 接埠齊全",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "M4 / M4 Pro" },
+          { icon: "ph-ruler", label: "尺寸", value: "12.7 × 12.7 cm" },
+          { icon: "ph-plugs", label: "接埠", value: "最多 8 個" }
+        ],
+        keywords: [
+          { icon: "ph-cube", title: "體積迷你", caption: "12.7 × 12.7 cm" },
+          { icon: "ph-plugs", title: "接埠齊全", caption: "最多8個・可接3螢幕" },
+          { icon: "ph-arrow-up-right", title: "效能可升級", caption: "M4 / M4 Pro 可選" }
+        ],
+        demo: "現場拿起 Mac mini 給客人感受體積比手掌大不了多少，搭配展示多接埠可同時接螢幕、鍵盤滑鼠、外接硬碟。",
+        script: "Mac mini 的機身非常迷你，比手掌大不了多少，但效能一點都不打折。它有很多接埠，最多可以接到三台螢幕，擴充彈性很大。如果需求更進階，像是工程師寫程式、剪片或 3D 建模，還可以選 M4 Pro 版本，效能會再往上拉一階。適合已經有螢幕、想要一台彈性主機的客人。"
+      },
+      {
+        id: "mac-studio", name: "Mac Studio", tagline: "專業級運算 · 小體積扛高效能",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "M4 Max / M3 Ultra" },
+          { icon: "ph-memory", label: "記憶體", value: "最高 96GB" },
+          { icon: "ph-hard-drive", label: "儲存", value: "最高 16TB" }
+        ],
+        keywords: [
+          { icon: "ph-cpu", title: "專業運算", caption: "M4 Max / M3 Ultra" },
+          { icon: "ph-cube", title: "小體積大效能", caption: "對標專業工作站" },
+          { icon: "ph-hard-drive", title: "記憶體頂規", caption: "最高96GB・16TB" }
+        ],
+        demo: "若店內有展示機，示範同時開啟多個高負載 App，或用規格表對比一般桌機，強調體積小但效能是工作站等級。",
+        script: "Mac Studio 是給重度專業工作者的選擇，像是影片後期、3D 動畫、AI 模型開發這些吃重運算的工作都能應付。它有 M4 Max 跟更高階的 M3 Ultra 兩種晶片可以選，體積不大但效能可以對標專業工作站。如果客人是設計師、剪輯師或做 AI 開發的，這台會是很有說服力的推薦。"
+      }
+    ],
+    ipad: [
+      {
+        id: "ipad-pro", name: "iPad Pro", tagline: "M5 頂規效能 · Ultra Retina XDR",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "M5" },
+          { icon: "ph-monitor", label: "螢幕", value: "Ultra Retina XDR" },
+          { icon: "ph-ruler", label: "尺寸", value: "11 吋 / 13 吋" }
+        ],
+        keywords: [
+          { icon: "ph-monitor", title: "頂規螢幕", caption: "Ultra Retina XDR" },
+          { icon: "ph-cpu", title: "效能最強", caption: "M5 晶片・ProRes 4K" },
+          { icon: "ph-laptop", title: "行動工作站", caption: "巧控鍵盤+Pencil Pro" }
+        ],
+        demo: "現場用 Apple Pencil Pro 示範懸浮預覽跟雙指按壓切換工具，展示對創作者的流暢體驗。",
+        script: "iPad Pro 是 iPad 系列裡效能最強的機種，螢幕用的是 Ultra Retina XDR，亮度跟對比表現非常好。晶片是最新的 M5，無論修圖、剪片或 3D 建模都很順。搭配巧控鍵盤跟 Apple Pencil Pro，可以秒變行動工作站，Pencil 還能懸浮預覽、雙指按壓切換工具，對創作者來說非常實用。"
+      },
+      {
+        id: "ipad-air", name: "iPad Air", tagline: "效能與輕便的平衡 · 雙尺寸可選",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "M4" },
+          { icon: "ph-ruler", label: "尺寸", value: "11 吋 / 13 吋" },
+          { icon: "ph-pencil", label: "Pencil", value: "Apple Pencil Pro" }
+        ],
+        keywords: [
+          { icon: "ph-scales", title: "效能均衡", caption: "M4 晶片剛好夠用" },
+          { icon: "ph-ruler", title: "雙尺寸", caption: "11 吋 / 13 吋可選" },
+          { icon: "ph-pencil", title: "創作好搭", caption: "巧控鍵盤+Pencil Pro" }
+        ],
+        demo: "現場展示 11 吋與 13 吋兩種尺寸讓客人比較手感，搭配 Apple Pencil Pro 示範基本繪圖功能。",
+        script: "iPad Air 主打效能和輕便之間的平衡，用的是 M4 晶片，日常文書、修圖、追劇都很順暢。有 11 吋和 13 吋兩種尺寸可以選，依照平常怎麼用來挑。它一樣支援巧控鍵盤跟 Apple Pencil Pro，不管是要拿來工作處理文件，還是畫畫做創作都可以。"
+      },
+      {
+        id: "ipad-mini", name: "iPad mini", tagline: "最小尺寸 · 完整體驗不打折",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "A17 Pro" },
+          { icon: "ph-ruler", label: "螢幕", value: "8.3 吋" },
+          { icon: "ph-pencil", label: "Pencil", value: "Apple Pencil Pro" }
+        ],
+        keywords: [
+          { icon: "ph-hand-pointing", title: "最小尺寸", caption: "8.3吋單手可操作" },
+          { icon: "ph-cpu", title: "效能不打折", caption: "A17 Pro 晶片" },
+          { icon: "ph-pencil", title: "支援Pencil Pro", caption: "輕巧也能做筆記" }
+        ],
+        demo: "現場單手拿起 iPad mini 操作給客人看，展示它比一般 iPad 小巧許多但功能一樣完整。",
+        script: "iPad mini 最大的賣點就是小巧，8.3 吋螢幕單手就能操作，出門帶著幾乎沒有負擔。晶片是 A17 Pro，效能不會因為體積小就打折，也支援 Apple Pencil Pro，可以拿來做筆記或畫圖。很適合喜歡輕便攜帶，但又不想犧牲功能完整性的客人。"
+      },
+      {
+        id: "ipad", name: "iPad", tagline: "入門親民 · 顏色繽紛 · 新手好上手",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "A16" },
+          { icon: "ph-hard-drive", label: "儲存", value: "128GB 起" },
+          { icon: "ph-pencil", label: "Pencil", value: "Apple Pencil (USB-C)" }
+        ],
+        keywords: [
+          { icon: "ph-graduation-cap", title: "入門親民", caption: "第一次買iPad首選" },
+          { icon: "ph-palette", title: "顏色繽紛", caption: "多色可挑外型活潑" },
+          { icon: "ph-keyboard", title: "鍵盤雙面夾", caption: "文書上網都夠用" }
+        ],
+        demo: "現場展示多色機身讓客人選色，並示範基本操作介面，強調對新手來說學習曲線低。",
+        script: "這款 iPad 是系列裡最入門的機型，適合第一次買 iPad 的客人。顏色選擇很繽紛，日常拿來上網、追劇、做筆記都很夠用。它也支援巧控鍵盤雙面夾，需要打字處理文件時一樣方便。如果客人是想找一台好上手、預算也比較彈性的 iPad，這款會是很好的入門選擇。"
+      }
+    ],
+    iphone: [
+      {
+        id: "iphone-17-pro", name: "iPhone 17 Pro", tagline: "三鏡頭旗艦 · 8 倍光學變焦 · 續航最久",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "A19 Pro" },
+          { icon: "ph-battery-full", label: "續航", value: "最長 31 至 37 小時" },
+          { icon: "ph-camera", label: "變焦", value: "最高 8 倍光學" }
+        ],
+        keywords: [
+          { icon: "ph-camera", title: "相機最強", caption: "三鏡頭・8倍光學變焦" },
+          { icon: "ph-battery-charging", title: "續航最久", caption: "Pro Max最長37小時" },
+          { icon: "ph-shield-check", title: "機身更耐用", caption: "鍛造鋁金屬一體成型" }
+        ],
+        demo: "現場打開相機 App 示範望遠變焦，從 1 倍慢慢拉到 8 倍，展示畫質幾乎不失真。",
+        script: "iPhone 17 Pro 系列是相機規格最強的一款，三顆鏡頭都是 4800 萬畫素，望遠最高可以拉到 8 倍光學變焦，拍遠處的東西也很清楚，我現場示範給你看。電池續航也是目前最久的，Pro Max 最長可以撐 37 小時。機身用的是鍛造鋁金屬一體成型，耐用度跟散熱表現都有提升，適合重度拍照或重度使用的客人。"
+      },
+      {
+        id: "iphone-17", name: "iPhone 17", tagline: "主流均衡選擇 · 螢幕更耐刮",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "A19" },
+          { icon: "ph-battery-full", label: "續航", value: "最長 30 小時" },
+          { icon: "ph-hard-drive", label: "儲存", value: "256GB 起" }
+        ],
+        keywords: [
+          { icon: "ph-camera", title: "主流均衡", caption: "雙鏡頭日常拍照夠用" },
+          { icon: "ph-shield-check", title: "螢幕更耐刮", caption: "超瓷晶盾2・3倍抗刮" },
+          { icon: "ph-battery-charging", title: "續航一整天", caption: "最長 30 小時" }
+        ],
+        demo: "現場示範前鏡頭 Center Stage 功能，展示雙向同拍或人物自動居中的效果。",
+        script: "iPhone 17 是均衡型的主力機種，雙鏡頭系統應付日常拍照、拍小孩、拍風景都很夠用。前鏡頭升級後可以自動幫你抓到最佳構圖，自拍或視訊通話都更方便。螢幕用超瓷晶盾 2，抗刮能力是前代的 3 倍，平常不用另外貼保護貼也比較放心。電池續航最長 30 小時，起始容量也提升到 256GB，對大部分客人來說是很好的選擇。"
+      },
+      {
+        id: "iphone-air", name: "iPhone Air", tagline: "史上最薄 · 鈦金屬邊框 · 大螢幕沉浸感",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "A19 Pro" },
+          { icon: "ph-ruler", label: "厚度", value: "5.6 mm" },
+          { icon: "ph-scales", label: "重量", value: "165 g" }
+        ],
+        keywords: [
+          { icon: "ph-feather", title: "史上最薄", caption: "5.6mm・165g" },
+          { icon: "ph-shield-check", title: "鈦金屬邊框", caption: "質感好・多為再生材質" },
+          { icon: "ph-monitor", title: "大螢幕沉浸", caption: "6.5吋・拍照依然出色" }
+        ],
+        demo: "現場讓客人親手拿起機身感受輕薄程度，對比其他機型的厚度差異。",
+        script: "iPhone Air 最大的特色就是薄，機身只有 5.6 公釐，重量也才 165 公克，拿在手上幾乎沒有負擔，你可以感受一下。邊框用的是 5 級鈦金屬，質感很好而且大部分是再生材質。螢幕有 6.5 吋，看影片或滑社群都很有沉浸感。雖然是單鏡頭設計，但拍照畫質一樣維持水準，適合喜歡輕薄手感、重視外型的客人。"
+      },
+      {
+        id: "iphone-17e", name: "iPhone 17e", tagline: "高 CP 值入門 · 適合換機升級",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "A19" },
+          { icon: "ph-battery-full", label: "續航", value: "最長 26 小時" },
+          { icon: "ph-hard-drive", label: "儲存", value: "256GB 起" }
+        ],
+        keywords: [
+          { icon: "ph-currency-circle-dollar", title: "高CP值入門", caption: "親民價格多數功能" },
+          { icon: "ph-camera", title: "單鏡頭好拍", caption: "4800萬畫素・2倍望遠" },
+          { icon: "ph-arrow-up-right", title: "適合換機升級", caption: "比舊機全面提升" }
+        ],
+        demo: "現場示範基本拍照功能與螢幕顯示效果，並與客人原本手上的舊機比較差異，凸顯升級感。",
+        script: "iPhone 17e 是很適合拿來換機的入門選擇，價格更親民，但保留了 iPhone 17 系列大部分的功能。相機是 4800 萬畫素單鏡頭，支援 2 倍光學望遠，平常拍照拍人都很夠用。如果客人手上是比較舊的機型，像 iPhone 11 或 SE，升級到這台會感受到很明顯的進步，螢幕、效能、拍照都會提升一個檔次。"
+      }
+    ],
+    watch: [
+      {
+        id: "watch-ultra-3", name: "Apple Watch Ultra 3", tagline: "極限運動裝備 · 續航最持久",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "S10" },
+          { icon: "ph-battery-full", label: "續航", value: "最長 42 小時" },
+          { icon: "ph-drop", label: "防水", value: "100 米" }
+        ],
+        keywords: [
+          { icon: "ph-mountains", title: "極限運動", caption: "潛水・登山・越野跑" },
+          { icon: "ph-battery-charging", title: "續航最持久", caption: "最長 42 小時" },
+          { icon: "ph-sun", title: "螢幕最亮", caption: "3000尼特・鈦金屬錶殼" }
+        ],
+        demo: "現場示範低耗電模式切換，或展示潮汐 App、羅盤等戶外功能畫面。",
+        script: "Apple Watch Ultra 3 是給重度運動或戶外愛好者的選擇，潛水、登山、越野跑都有專屬功能，續航也是三款裡最持久的，一般使用可以撐 42 小時，開低耗電模式甚至到 72 小時。螢幕最高亮度到 3000 尼特，太陽底下一樣看得清楚，錶殼是鈦金屬加藍寶石玻璃，耐用度很夠。如果客人常運動或喜歡戶外活動，這支很好推。"
+      },
+      {
+        id: "watch-series-11", name: "Apple Watch Series 11", tagline: "健康監測最完整 · 日常配戴最舒適",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "S10" },
+          { icon: "ph-battery-full", label: "續航", value: "最長 24 小時" },
+          { icon: "ph-drop", label: "防水", value: "50 米" }
+        ],
+        keywords: [
+          { icon: "ph-heartbeat", title: "健康監測最完整", caption: "心電圖・血氧・血壓通知" },
+          { icon: "ph-feather", title: "配戴最舒適", caption: "纖薄設計" },
+          { icon: "ph-palette", title: "材質選擇多", caption: "鋁金屬 / 鈦金屬7款" }
+        ],
+        demo: "現場打開心電圖 App 或睡眠分數畫面，展示健康數據呈現方式。",
+        script: "Apple Watch Series 11 是健康監測最完整的一款，心電圖、血氧濃度都有，還新增了高血壓通知功能，對關心健康的客人很有吸引力。續航最長 24 小時，日常配戴也很舒適纖薄。錶殼有鋁金屬跟鈦金屬可以選，一共 7 種材質配色，兼顧健康功能跟日常配戴的需求，是最平衡的一款。"
+      },
+      {
+        id: "watch-se-3", name: "Apple Watch SE 3", tagline: "入門好入手 · 安全功能齊全",
+        specs: [
+          { icon: "ph-cpu", label: "晶片", value: "S10" },
+          { icon: "ph-battery-full", label: "續航", value: "最長 18 小時" },
+          { icon: "ph-ruler", label: "錶殼", value: "40 / 44 mm" }
+        ],
+        keywords: [
+          { icon: "ph-currency-circle-dollar", title: "入門好入手", caption: "核心安全功能保留" },
+          { icon: "ph-baby", title: "適合首購/兒童", caption: "支援親子設定" },
+          { icon: "ph-warning-circle", title: "安全功能齊全", caption: "跌倒偵測・車禍偵測・SOS" }
+        ],
+        demo: "現場示範緊急 SOS 或跌倒偵測的操作方式，強調安全防護到位。",
+        script: "Apple Watch SE 3 是入門款，價格比較親民，但核心的健康安全功能都保留，像是跌倒偵測、車禍偵測、緊急 SOS 都有。它也支援親子設定，很適合買給小孩當作第一支手錶。如果客人是第一次購入 Apple Watch，或想要基本安全防護功能就好，SE 3 是很划算的選擇。"
+      }
+    ]
+  };
+
+  const CATEGORIES = ["mac", "ipad", "iphone", "watch"];
+
+  function renderCategory(cat) {
+    const pillsEl = document.querySelector(`.model-pills[data-pills="${cat}"]`);
+    const panelsEl = document.querySelector(`[data-panels="${cat}"]`);
+    const models = DATA[cat];
+
+    pillsEl.innerHTML = models.map((m, i) =>
+      `<button type="button" class="model-pill${i === 0 ? " active" : ""}" data-model="${m.id}">${m.name}</button>`
+    ).join("");
+
+    panelsEl.innerHTML = models.map((m, i) => `
+      <div class="model-panel${i === 0 ? " active" : ""}" data-panel="${m.id}">
+        <div class="model-hero">
+          <h2>${m.name}</h2>
+          <span>${m.tagline}</span>
+          <div class="spec-row">
+            ${m.specs.map(s => `
+              <div class="spec-chip">
+                <i class="ph ${s.icon}"></i>
+                <span class="spec-label">${s.label}</span>
+                <span class="spec-value tabular">${s.value}</span>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="section-label"><i class="ph ph-star-four"></i>3 個記憶特色</div>
+        <div class="feature-grid">
+          ${m.keywords.map(k => `
+            <div class="feature-tile">
+              <div class="tile-icon"><i class="ph ${k.icon}"></i></div>
+              <strong>${k.title}</strong>
+              <span>${k.caption}</span>
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="section-label"><i class="ph ph-lightbulb"></i>Demo 情境</div>
+        <div class="demo-box">${m.demo}</div>
+
+        <div class="section-label"><i class="ph ph-chat-circle-text"></i>30 秒銷售話術</div>
+        <div class="script-box">
+          <p>${m.script}</p>
+          <button class="copy-btn" type="button" data-copy-text="${m.script.replace(/"/g, "&quot;")}">
+            <i class="ph ph-copy"></i>複製話術
+          </button>
+        </div>
+      </div>
+    `).join("");
+
+    pillsEl.querySelectorAll(".model-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        pillsEl.querySelectorAll(".model-pill").forEach(p => p.classList.toggle("active", p === pill));
+        panelsEl.querySelectorAll(".model-panel").forEach(p =>
+          p.classList.toggle("active", p.dataset.panel === pill.dataset.model)
+        );
+        window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+      });
+    });
+  }
+
+  CATEGORIES.forEach(renderCategory);
+
+  const catTabs = document.querySelectorAll("nav.tabbar .cat-tab");
+  const catPages = document.querySelectorAll(".category-page");
+
+  catTabs.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = btn.dataset.target;
+      catTabs.forEach(b => b.classList.toggle("active", b === btn));
+      catPages.forEach(p => p.classList.toggle("active", p.dataset.category === target));
+      window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".copy-btn");
+    if (!btn) return;
+
+    const text = btn.dataset.copyText;
+    const done = () => {
+      const original = btn.innerHTML;
+      btn.classList.add("copied");
+      btn.innerHTML = '<i class="ph ph-check"></i>已複製';
+      setTimeout(() => {
+        btn.classList.remove("copied");
+        btn.innerHTML = original;
+      }, 1600);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+    } else {
+      fallbackCopy(text, done);
+    }
+  });
+
+  function fallbackCopy(text, cb) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta);
+    cb();
+  }
+</script>
+
+</body>
+</html>
