@@ -1098,7 +1098,7 @@
     cb();
   }
 
-  // 支援從工具站帶入的個人化參數：?cat= 預設分類、?name= 暱稱問候、?theme= 深淺主題、?text= 文字大小
+  // 支援從工具站帶入的個人化參數：?cat= 預設分類、?name= 暱稱、?store= 門市名稱、?note= 自訂顯示文字、?theme= 深淺主題、?text= 文字大小
   (function initFromQuery() {
     const params = new URLSearchParams(location.search);
 
@@ -1109,14 +1109,31 @@
     }
 
     const name = (params.get("name") || "").trim().slice(0, 12);
-    if (name) {
+    const store = (params.get("store") || "").trim().slice(0, 20);
+    if (name || store) {
       const greet = document.createElement("p");
       greet.style.margin = "4px 0 0";
       greet.style.fontSize = "12px";
       greet.style.fontWeight = "700";
       greet.style.color = "var(--ink)";
-      greet.textContent = `Hi, ${name}，歡迎回來`;
+      if (name && store) {
+        greet.textContent = `Hi, ${name}（${store}），歡迎回來`;
+      } else if (name) {
+        greet.textContent = `Hi, ${name}，歡迎回來`;
+      } else {
+        greet.textContent = `${store}夥伴專用版`;
+      }
       document.querySelector("header").appendChild(greet);
+    }
+
+    const note = (params.get("note") || "").trim().slice(0, 40);
+    if (note) {
+      const noteEl = document.createElement("p");
+      noteEl.style.margin = "4px 0 0";
+      noteEl.style.fontSize = "11.5px";
+      noteEl.style.color = "var(--sub-ink)";
+      noteEl.textContent = `備註：${note}`;
+      document.querySelector("header").appendChild(noteEl);
     }
 
     const theme = params.get("theme");
