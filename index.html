@@ -86,18 +86,13 @@
   /* ---------- Model pill selector ---------- */
   .model-pills {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
     padding: 2px 2px 14px;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
   }
-  .model-pills::-webkit-scrollbar { display: none; }
 
   .model-pill {
     flex: 0 0 auto;
-    scroll-snap-align: start;
     font-family: inherit;
     font-size: 13.5px;
     font-weight: 700;
@@ -111,6 +106,7 @@
     align-items: center;
     cursor: pointer;
     white-space: nowrap;
+    transition: transform 0.15s ease;
   }
 
   .model-pill.active {
@@ -119,9 +115,15 @@
     color: #FFFFFF;
   }
 
+  .model-pill:active { transform: scale(0.96); }
+
   .model-pill:focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .model-pill { transition: none; }
   }
 
   /* ---------- Model detail panel ---------- */
