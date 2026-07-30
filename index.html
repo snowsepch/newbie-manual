@@ -1028,6 +1028,28 @@
     document.body.removeChild(ta);
     cb();
   }
+
+  // 支援從工具站帶入的個人化參數：?cat= 預設分類、?name= 暱稱問候
+  (function initFromQuery() {
+    const params = new URLSearchParams(location.search);
+
+    const cat = params.get("cat");
+    if (CATEGORIES.includes(cat)) {
+      const tab = document.querySelector(`nav.tabbar .cat-tab[data-target="${cat}"]`);
+      if (tab) tab.click();
+    }
+
+    const name = (params.get("name") || "").trim().slice(0, 12);
+    if (name) {
+      const greet = document.createElement("p");
+      greet.style.margin = "4px 0 0";
+      greet.style.fontSize = "12px";
+      greet.style.fontWeight = "700";
+      greet.style.color = "var(--ink)";
+      greet.textContent = `Hi, ${name}，歡迎回來`;
+      document.querySelector("header").appendChild(greet);
+    }
+  })();
 </script>
 
 </body>
