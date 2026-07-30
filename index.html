@@ -10,9 +10,12 @@
     --header-bg: #F7F4ED;      /* 米白，INKLO 主視覺 header 底色 */
     --body-bg: #FBFAF6;        /* 極淡米白，內容區底色 */
     --frame-bg: #EAE6DB;       /* 手機框外側的桌面底色，只在寬螢幕預覽時可見 */
-    --ink: #1A1A1A;            /* 主要文字／硬邊線 */
-    --sub-ink: #6B6B70;        /* 次要說明文字 */
-    --tertiary-ink: #9B9B9F;   /* 最弱層級文字，如規格單位 */
+    --ink: #221D18;            /* 主要文字，暖調近黑取代純黑，質感更軟 */
+    --sub-ink: #6E6862;        /* 次要說明文字，同暖灰色階 */
+    --tertiary-ink: #9C958C;   /* 最弱層級文字，如規格單位 */
+    --line: #EAE4D6;           /* 結構分隔線(header/tabbar)，取代硬黑邊線 */
+    --card-line: #EFEBE1;      /* 卡片邊框，比結構分隔線更淡 */
+    --shadow-soft: rgba(64, 54, 38, 0.06);   /* 卡片柔和陰影，暖色調而非純黑 */
     --ring: #1D4ED8;           /* 鍵盤聚焦框，取鮮明藍避免與各類別強調色衝突 */
     --tabbar-h: 76px;          /* 底部分類列高度，比對純手機單手操作再放大一點 */
     --phone-w: 430px;          /* 鎖定 iPhone Pro Max 寬度比例，任何裝置開啟都維持手機版面 */
@@ -55,7 +58,8 @@
   /* ---------- Header ---------- */
   header {
     background: var(--header-bg);
-    border-bottom: 2px solid var(--ink);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 6px 16px -12px var(--shadow-soft), 0 1px 0 var(--shadow-soft);
     padding: max(18px, env(safe-area-inset-top)) 20px 14px;
     position: sticky;
     top: 0;
@@ -91,13 +95,14 @@
     justify-content: space-between;
     gap: 12px;
     background: #FFFFFF;
-    border: 1.5px solid #E3DFD4;
+    border: 1px solid var(--card-line);
     border-radius: 14px;
     padding: 12px 14px;
     margin-bottom: 14px;
     font-family: inherit;
     text-align: left;
     cursor: pointer;
+    box-shadow: 0 3px 10px var(--shadow-soft);
     transition: transform 0.15s ease;
   }
 
@@ -305,10 +310,11 @@
   }
 
   .model-hero {
-    background: var(--accent-deep);
+    background: linear-gradient(160deg, var(--accent-text) 0%, var(--accent-deep) 100%);
     border-radius: 16px;
     padding: 18px 20px;
     margin-bottom: 14px;
+    box-shadow: 0 14px 26px -16px var(--accent-deep);
   }
 
   .model-hero h2 {
@@ -340,6 +346,7 @@
     border-radius: 10px;
     padding: 7px 11px;
     font-size: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   }
 
   .spec-chip i { font-size: 15px; color: var(--accent-text); }
@@ -378,7 +385,8 @@
     padding: 14px 6px 12px;
     border-radius: 14px;
     background: #FFFFFF;
-    border: 1px solid #ECE9E1;
+    border: 1px solid var(--card-line);
+    box-shadow: 0 3px 10px var(--shadow-soft);
   }
 
   .feature-tile .tile-icon {
@@ -412,12 +420,13 @@
   /* ---------- Demo scenario ---------- */
   .demo-box {
     background: #FFFFFF;
-    border: 1.5px solid var(--ink);
+    border: 1px solid var(--card-line);
     border-radius: 12px;
     padding: 15px 16px;
     font-size: 13.5px;
     line-height: 1.75;
     color: var(--ink);
+    box-shadow: 0 3px 10px var(--shadow-soft);
   }
 
   /* ---------- Script quote ---------- */
@@ -470,7 +479,8 @@
     height: var(--tabbar-h);
     padding-bottom: env(safe-area-inset-bottom);
     background: var(--header-bg);
-    border-top: 2px solid var(--ink);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -6px 16px -12px var(--shadow-soft), 0 -1px 0 var(--shadow-soft);
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     z-index: 30;
@@ -508,11 +518,11 @@
 
   nav.tabbar button.active { color: var(--tab-active-color, var(--ink)); }
 
-  /* per-category accent tokens：--accent-bg 柔霧淡底(圖示晶片用)、--accent-text 深邃寶石色(圖示/強調字/導覽字，質感內斂但對比足夠)、--accent-deep 更深寶石色卡底(hero用) */
-  .cat-mac    { --accent-bg:#E6E9F2; --accent-text:#2E4C8C; --accent-deep:#1D3163; }
-  .cat-ipad   { --accent-bg:#E3ECE5; --accent-text:#2F6B4F; --accent-deep:#1D4A36; }
-  .cat-iphone { --accent-bg:#F1E6DD; --accent-text:#96461F; --accent-deep:#6B3312; }
-  .cat-watch  { --accent-bg:#F0E3E9; --accent-text:#8B2C55; --accent-deep:#631F3D; }
+  /* per-category accent tokens：--accent-bg 清新柔霧淡底(圖示晶片用)、--accent-text 清新中調色(圖示/強調字/導覽字，明亮但對比足夠)、--accent-deep 深邃同色調(hero漸層深端，承載白字) */
+  .cat-mac    { --accent-bg:#E5EAF1; --accent-text:#4A6FA0; --accent-deep:#263953; }
+  .cat-ipad   { --accent-bg:#E5EBE8; --accent-text:#47775C; --accent-deep:#243D2F; }
+  .cat-iphone { --accent-bg:#F1E7E2; --accent-text:#A25834; --accent-deep:#542D1B; }
+  .cat-watch  { --accent-bg:#F2E6EC; --accent-text:#A8527A; --accent-deep:#572A3F; }
 </style>
 </head>
 <body>
@@ -555,16 +565,16 @@
 </div>
 
 <nav class="tabbar">
-  <button type="button" class="cat-tab active" data-target="mac" style="--tab-active-color:#2E4C8C">
+  <button type="button" class="cat-tab active" data-target="mac" style="--tab-active-color:#4A6FA0">
     <i class="ph ph-laptop"></i>Mac
   </button>
-  <button type="button" class="cat-tab" data-target="ipad" style="--tab-active-color:#2F6B4F">
+  <button type="button" class="cat-tab" data-target="ipad" style="--tab-active-color:#47775C">
     <i class="ph ph-device-tablet"></i>iPad
   </button>
-  <button type="button" class="cat-tab" data-target="iphone" style="--tab-active-color:#96461F">
+  <button type="button" class="cat-tab" data-target="iphone" style="--tab-active-color:#A25834">
     <i class="ph ph-device-mobile"></i>iPhone
   </button>
-  <button type="button" class="cat-tab" data-target="watch" style="--tab-active-color:#8B2C55">
+  <button type="button" class="cat-tab" data-target="watch" style="--tab-active-color:#A8527A">
     <i class="ph ph-watch"></i>Watch
   </button>
 </nav>
