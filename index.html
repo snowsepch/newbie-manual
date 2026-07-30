@@ -508,11 +508,11 @@
 
   nav.tabbar button.active { color: var(--tab-active-color, var(--ink)); }
 
-  /* per-category accent tokens：--accent-bg 淡底(圖示晶片用)、--accent-text 飽和鮮彩(圖示/強調字，深度足以承載白字)、--accent-deep 濃郁寶石色卡底(hero用) */
-  .cat-mac    { --accent-bg:#E1EAFE; --accent-text:#1D4ED8; --accent-deep:#1731A6; }
-  .cat-ipad   { --accent-bg:#DBF3E4; --accent-text:#0E8A47; --accent-deep:#0B6B37; }
-  .cat-iphone { --accent-bg:#FDE3D2; --accent-text:#B23A0A; --accent-deep:#922F08; }
-  .cat-watch  { --accent-bg:#FBDEEC; --accent-text:#B0185C; --accent-deep:#8C1249; }
+  /* per-category accent tokens：--accent-bg 柔霧淡底(圖示晶片用)、--accent-text 深邃寶石色(圖示/強調字/導覽字，質感內斂但對比足夠)、--accent-deep 更深寶石色卡底(hero用) */
+  .cat-mac    { --accent-bg:#E6E9F2; --accent-text:#2E4C8C; --accent-deep:#1D3163; }
+  .cat-ipad   { --accent-bg:#E3ECE5; --accent-text:#2F6B4F; --accent-deep:#1D4A36; }
+  .cat-iphone { --accent-bg:#F1E6DD; --accent-text:#96461F; --accent-deep:#6B3312; }
+  .cat-watch  { --accent-bg:#F0E3E9; --accent-text:#8B2C55; --accent-deep:#631F3D; }
 </style>
 </head>
 <body>
@@ -555,16 +555,16 @@
 </div>
 
 <nav class="tabbar">
-  <button type="button" class="cat-tab active" data-target="mac" style="--tab-active-color:#1D4ED8">
+  <button type="button" class="cat-tab active" data-target="mac" style="--tab-active-color:#2E4C8C">
     <i class="ph ph-laptop"></i>Mac
   </button>
-  <button type="button" class="cat-tab" data-target="ipad" style="--tab-active-color:#0E8A47">
+  <button type="button" class="cat-tab" data-target="ipad" style="--tab-active-color:#2F6B4F">
     <i class="ph ph-device-tablet"></i>iPad
   </button>
-  <button type="button" class="cat-tab" data-target="iphone" style="--tab-active-color:#B23A0A">
+  <button type="button" class="cat-tab" data-target="iphone" style="--tab-active-color:#96461F">
     <i class="ph ph-device-mobile"></i>iPhone
   </button>
-  <button type="button" class="cat-tab" data-target="watch" style="--tab-active-color:#B0185C">
+  <button type="button" class="cat-tab" data-target="watch" style="--tab-active-color:#8B2C55">
     <i class="ph ph-watch"></i>Watch
   </button>
 </nav>
