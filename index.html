@@ -10,6 +10,7 @@
     --header-bg: #F7F4ED;      /* 米白，INKLO 主視覺 header 底色 */
     --body-bg: #FBFAF6;        /* 極淡米白，內容區底色 */
     --frame-bg: #EAE6DB;       /* 手機框外側的桌面底色，只在寬螢幕預覽時可見 */
+    --card-bg: #FFFFFF;        /* 卡片/白底元件，深色模式會變暗色卡面 */
     --ink: #221D18;            /* 主要文字，暖調近黑取代純黑，質感更軟 */
     --sub-ink: #6E6862;        /* 次要說明文字，同暖灰色階 */
     --tertiary-ink: #9C958C;   /* 最弱層級文字，如規格單位 */
@@ -19,7 +20,29 @@
     --ring: #1D4ED8;           /* 鍵盤聚焦框，取鮮明藍避免與各類別強調色衝突 */
     --tabbar-h: 76px;          /* 底部分類列高度，比對純手機單手操作再放大一點 */
     --phone-w: 430px;          /* 鎖定 iPhone Pro Max 寬度比例，任何裝置開啟都維持手機版面 */
+    --frame-border: #DFDACD;   /* 寬螢幕預覽時手機框邊線 */
+    --sheet-tint: #F1EEE5;     /* bottom sheet 按下/關閉鈕底色 */
+    --sheet-handle: #DFDACD;   /* bottom sheet 拖曳把手 */
+    --fs-scale: 1;             /* 文字大小個人化：標準=1，大字模式由 [data-text="large"] 覆寫 */
   }
+
+  /* ---------- 深色模式：跟隨系統(除非明確指定 light) 或 ?theme=dark 強制指定 ---------- */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --header-bg: #211D18; --body-bg: #17140F; --frame-bg: #0F0D0A; --card-bg: #241F19;
+      --ink: #F3EEE4; --sub-ink: #B8AEA0; --tertiary-ink: #948B7C;
+      --line: #322C24; --card-line: #2B251E; --shadow-soft: rgba(0, 0, 0, 0.35);
+      --frame-border: #3A332A; --sheet-tint: #2B251E; --sheet-handle: #3A332A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --header-bg: #211D18; --body-bg: #17140F; --frame-bg: #0F0D0A; --card-bg: #241F19;
+    --ink: #F3EEE4; --sub-ink: #B8AEA0; --tertiary-ink: #948B7C;
+    --line: #322C24; --card-line: #2B251E; --shadow-soft: rgba(0, 0, 0, 0.35);
+    --frame-border: #3A332A; --sheet-tint: #2B251E; --sheet-handle: #3A332A;
+  }
+
+  [data-text="large"] { --fs-scale: 1.15; }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
@@ -48,8 +71,8 @@
 
   @media (min-width: 431px) {
     .app-frame {
-      border-left: 1.5px solid #DFDACD;
-      border-right: 1.5px solid #DFDACD;
+      border-left: 1.5px solid var(--frame-border);
+      border-right: 1.5px solid var(--frame-border);
     }
   }
 
@@ -94,7 +117,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    background: #FFFFFF;
+    background: var(--card-bg);
     border: 1px solid var(--card-line);
     border-radius: 14px;
     padding: 12px 14px;
@@ -149,7 +172,7 @@
 
   .model-select-trigger .trigger-chevron i {
     font-size: 16px;
-    color: var(--accent-text);
+    color: var(--accent-ui);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -200,7 +223,7 @@
     width: 36px;
     height: 4px;
     border-radius: 999px;
-    background: #DFDACD;
+    background: var(--sheet-handle);
     margin: 0 auto 10px;
   }
 
@@ -209,7 +232,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 18px 12px;
-    border-bottom: 1px solid #ECE9E1;
+    border-bottom: 1px solid var(--line);
     flex: 0 0 auto;
   }
 
@@ -223,7 +246,7 @@
     height: 32px;
     border-radius: 50%;
     border: none;
-    background: #F1EEE5;
+    background: var(--sheet-tint);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -257,7 +280,7 @@
     cursor: pointer;
   }
 
-  .sheet-item:active { background: #F1EEE5; }
+  .sheet-item:active { background: var(--sheet-tint); }
   .sheet-item.active { background: var(--accent-bg); }
 
   .sheet-item:focus-visible {
@@ -290,7 +313,7 @@
   .sheet-item .item-check {
     flex: 0 0 auto;
     font-size: 18px;
-    color: var(--accent-text);
+    color: var(--accent-ui);
     opacity: 0;
   }
 
@@ -319,14 +342,14 @@
 
   .model-hero h2 {
     margin: 0 0 3px;
-    font-size: 21px;
+    font-size: calc(21px * var(--fs-scale));
     font-weight: 900;
     color: #FFFFFF;
     letter-spacing: -0.3px;
   }
 
   .model-hero span {
-    font-size: 12.5px;
+    font-size: calc(12.5px * var(--fs-scale));
     color: rgba(255, 255, 255, 0.85);
   }
 
@@ -342,14 +365,14 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    background: #FFFFFF;
+    background: var(--card-bg);
     border-radius: 10px;
     padding: 7px 11px;
-    font-size: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    font-size: calc(12px * var(--fs-scale));
+    box-shadow: 0 2px 6px var(--shadow-soft);
   }
 
-  .spec-chip i { font-size: 15px; color: var(--accent-text); }
+  .spec-chip i { font-size: 15px; color: var(--accent-ui); }
   .spec-chip .spec-label { color: var(--tertiary-ink); }
   .spec-chip .spec-value { font-weight: 700; color: var(--ink); }
 
@@ -358,15 +381,15 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 12.5px;
+    font-size: calc(12.5px * var(--fs-scale));
     font-weight: 800;
     color: var(--sub-ink);
     margin: 20px 0 10px;
   }
 
-  .section-label i { font-size: 15px; color: var(--accent-text); }
+  .section-label i { font-size: 15px; color: var(--accent-ui); }
 
-  /* ---------- Feature tiles (3 記憶關鍵詞) ---------- */
+  /* ---------- Feature tiles (3 記憶特色) ---------- */
   .feature-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -384,7 +407,7 @@
     min-height: 100px;
     padding: 14px 6px 12px;
     border-radius: 14px;
-    background: #FFFFFF;
+    background: var(--card-bg);
     border: 1px solid var(--card-line);
     box-shadow: 0 3px 10px var(--shadow-soft);
   }
@@ -401,29 +424,29 @@
 
   .feature-tile .tile-icon i {
     font-size: 19px;
-    color: var(--accent-text);
+    color: var(--accent-ui);
   }
 
   .feature-tile strong {
-    font-size: 14px;
+    font-size: calc(14px * var(--fs-scale));
     font-weight: 900;
     line-height: 1.3;
     letter-spacing: -0.2px;
   }
 
   .feature-tile span {
-    font-size: 11px;
+    font-size: calc(11px * var(--fs-scale));
     line-height: 1.45;
     color: var(--sub-ink);
   }
 
   /* ---------- Demo scenario ---------- */
   .demo-box {
-    background: #FFFFFF;
+    background: var(--card-bg);
     border: 1px solid var(--card-line);
     border-radius: 12px;
     padding: 15px 16px;
-    font-size: 13.5px;
+    font-size: calc(13.5px * var(--fs-scale));
     line-height: 1.75;
     color: var(--ink);
     box-shadow: 0 3px 10px var(--shadow-soft);
@@ -438,7 +461,7 @@
 
   .script-box p {
     margin: 0 0 12px;
-    font-size: 14px;
+    font-size: calc(14px * var(--fs-scale));
     line-height: 1.85;
     color: var(--ink);
   }
@@ -448,7 +471,7 @@
     align-items: center;
     gap: 6px;
     background: var(--ink);
-    color: #FFFFFF;
+    color: var(--body-bg);
     border: none;
     border-radius: 999px;
     padding: 10px 18px;
@@ -466,7 +489,7 @@
     outline-offset: 2px;
   }
 
-  .copy-btn.copied { background: var(--accent-text); }
+  .copy-btn.copied { background: var(--accent-ui); }
 
   /* ---------- Bottom tab bar ---------- */
   nav.tabbar {
@@ -488,8 +511,8 @@
 
   @media (min-width: 431px) {
     nav.tabbar {
-      border-left: 1.5px solid #DFDACD;
-      border-right: 1.5px solid #DFDACD;
+      border-left: 1.5px solid var(--frame-border);
+      border-right: 1.5px solid var(--frame-border);
     }
   }
 
@@ -516,13 +539,54 @@
     outline-offset: -2px;
   }
 
-  nav.tabbar button.active { color: var(--tab-active-color, var(--ink)); }
+  nav.tabbar button.active { color: var(--accent-ui); }
 
-  /* per-category accent tokens：--accent-bg 清新柔霧淡底(圖示晶片用)、--accent-text 清新中調色(圖示/強調字/導覽字，明亮但對比足夠)、--accent-deep 深邃同色調(hero漸層深端，承載白字) */
-  .cat-mac    { --accent-bg:#E5EAF1; --accent-text:#4A6FA0; --accent-deep:#263953; }
-  .cat-ipad   { --accent-bg:#E5EBE8; --accent-text:#47775C; --accent-deep:#243D2F; }
-  .cat-iphone { --accent-bg:#F1E7E2; --accent-text:#A25834; --accent-deep:#542D1B; }
-  .cat-watch  { --accent-bg:#F2E6EC; --accent-text:#A8527A; --accent-deep:#572A3F; }
+  /* per-category accent tokens：--accent-bg 清新柔霧淡底(圖示晶片用)、--accent-text 清新中調色(僅供 hero 漸層用，兩種模式維持同色不變)、--accent-ui 圖示/導覽字實際顯示色(深色模式會換亮版避免對比不足)、--accent-deep 深邃同色調(hero漸層深端，承載白字) */
+  .cat-mac    { --accent-bg:#E5EAF1; --accent-text:#4A6FA0; --accent-ui:#4A6FA0; --accent-deep:#263953; }
+  .cat-ipad   { --accent-bg:#E5EBE8; --accent-text:#47775C; --accent-ui:#47775C; --accent-deep:#243D2F; }
+  .cat-iphone { --accent-bg:#F1E7E2; --accent-text:#A25834; --accent-ui:#A25834; --accent-deep:#542D1B; }
+  .cat-watch  { --accent-bg:#F2E6EC; --accent-text:#A8527A; --accent-ui:#A8527A; --accent-deep:#572A3F; }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .cat-mac    { --accent-bg:#2A3A50; --accent-ui:#8FB3E0; }
+    :root:not([data-theme="light"]) .cat-ipad   { --accent-bg:#223A2E; --accent-ui:#7CC29E; }
+    :root:not([data-theme="light"]) .cat-iphone { --accent-bg:#402A1C; --accent-ui:#E39469; }
+    :root:not([data-theme="light"]) .cat-watch  { --accent-bg:#402234; --accent-ui:#E491B8; }
+  }
+  :root[data-theme="dark"] .cat-mac    { --accent-bg:#2A3A50; --accent-ui:#8FB3E0; }
+  :root[data-theme="dark"] .cat-ipad   { --accent-bg:#223A2E; --accent-ui:#7CC29E; }
+  :root[data-theme="dark"] .cat-iphone { --accent-bg:#402A1C; --accent-ui:#E39469; }
+  :root[data-theme="dark"] .cat-watch  { --accent-bg:#402234; --accent-ui:#E491B8; }
+
+  /* ---------- By ASC 品牌標注 ---------- */
+  .by-asc {
+    text-align: center;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--tertiary-ink);
+    padding: 22px 0 4px;
+  }
+
+  /* ---------- Header 返回工具站按鈕 ---------- */
+  .back-to-station {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--sub-ink);
+    text-decoration: none;
+    margin-bottom: 8px;
+  }
+
+  .back-to-station i { font-size: 13px; }
+
+  .back-to-station:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
 </style>
 </head>
 <body>
@@ -530,6 +594,9 @@
 <div class="app-frame">
 
 <header>
+  <a class="back-to-station" href="https://snowsepch.github.io/tool-station/">
+    <i class="ph ph-arrow-left"></i>返回工具站
+  </a>
   <h1>新人快速上手手冊</h1>
   <p>17 款現役機型 · 30 秒快速記憶 · 隨看隨用</p>
 </header>
@@ -560,21 +627,23 @@
     <div data-panels="watch"></div>
   </section>
 
+  <p class="by-asc">By ASC</p>
+
 </main>
 
 </div>
 
 <nav class="tabbar">
-  <button type="button" class="cat-tab active" data-target="mac" style="--tab-active-color:#4A6FA0">
+  <button type="button" class="cat-tab cat-mac active" data-target="mac">
     <i class="ph ph-laptop"></i>Mac
   </button>
-  <button type="button" class="cat-tab" data-target="ipad" style="--tab-active-color:#47775C">
+  <button type="button" class="cat-tab cat-ipad" data-target="ipad">
     <i class="ph ph-device-tablet"></i>iPad
   </button>
-  <button type="button" class="cat-tab" data-target="iphone" style="--tab-active-color:#A25834">
+  <button type="button" class="cat-tab cat-iphone" data-target="iphone">
     <i class="ph ph-device-mobile"></i>iPhone
   </button>
-  <button type="button" class="cat-tab" data-target="watch" style="--tab-active-color:#A8527A">
+  <button type="button" class="cat-tab cat-watch" data-target="watch">
     <i class="ph ph-watch"></i>Watch
   </button>
 </nav>
@@ -1029,7 +1098,7 @@
     cb();
   }
 
-  // 支援從工具站帶入的個人化參數：?cat= 預設分類、?name= 暱稱問候
+  // 支援從工具站帶入的個人化參數：?cat= 預設分類、?name= 暱稱問候、?theme= 深淺主題、?text= 文字大小
   (function initFromQuery() {
     const params = new URLSearchParams(location.search);
 
@@ -1048,6 +1117,16 @@
       greet.style.color = "var(--ink)";
       greet.textContent = `Hi, ${name}，歡迎回來`;
       document.querySelector("header").appendChild(greet);
+    }
+
+    const theme = params.get("theme");
+    if (theme === "dark" || theme === "light") {
+      document.documentElement.dataset.theme = theme;
+    }
+
+    const text = params.get("text");
+    if (text === "large") {
+      document.documentElement.dataset.text = "large";
     }
   })();
 </script>
