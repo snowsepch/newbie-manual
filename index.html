@@ -541,11 +541,11 @@
 
   nav.tabbar button.active { color: var(--accent-ui); }
 
-  /* per-category accent tokens：--accent-bg 清新柔霧淡底(圖示晶片用)、--accent-text 清新中調色(僅供 hero 漸層用，兩種模式維持同色不變)、--accent-ui 圖示/導覽字實際顯示色(深色模式會換亮版避免對比不足)、--accent-deep 深邃同色調(hero漸層深端，承載白字) */
-  .cat-mac    { --accent-bg:#E5EAF1; --accent-text:#4A6FA0; --accent-ui:#4A6FA0; --accent-deep:#263953; }
-  .cat-ipad   { --accent-bg:#E5EBE8; --accent-text:#47775C; --accent-ui:#47775C; --accent-deep:#243D2F; }
-  .cat-iphone { --accent-bg:#F1E7E2; --accent-text:#A25834; --accent-ui:#A25834; --accent-deep:#542D1B; }
-  .cat-watch  { --accent-bg:#F2E6EC; --accent-text:#A8527A; --accent-ui:#A8527A; --accent-deep:#572A3F; }
+  /* per-category accent tokens：--accent-bg 清新柔霧淡底(圖示晶片用)、--accent-text 清新中調色(僅供 hero 漸層用，兩種模式維持同色不變)、--accent-ui 圖示/導覽字實際顯示色(深色模式會換亮版避免對比不足)、--accent-deep 深邃同色調(hero漸層深端，承載白字)。第五輪(2026-07-31)整體再降飽和10~15個百分點、微調明度，WCAG對比全數重新驗算(header 4.90~4.92、white-on-hero 5.2+、icon-on-bg 4.3+)，比第四輪的4.6~4.8更寬鬆也更沉靜清新，不再貼著AA下限 */
+  .cat-mac    { --accent-bg:#E4E7ED; --accent-text:#546C8C; --accent-ui:#546C8C; --accent-deep:#1C2B40; }
+  .cat-ipad   { --accent-bg:#E5EBE8; --accent-text:#537160; --accent-ui:#537160; --accent-deep:#203C2C; }
+  .cat-iphone { --accent-bg:#F0E5E0; --accent-text:#955C41; --accent-ui:#955C41; --accent-deep:#472515; }
+  .cat-watch  { --accent-bg:#EDE4E8; --accent-text:#925973; --accent-ui:#925973; --accent-deep:#401C2D; }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .cat-mac    { --accent-bg:#2A3A50; --accent-ui:#8FB3E0; }
