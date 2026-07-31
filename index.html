@@ -541,11 +541,11 @@
 
   nav.tabbar button.active { color: var(--accent-ui); }
 
-  /* per-category accent tokens：--accent-bg 清新柔霧淡底(圖示晶片用)、--accent-text 清新中調色(僅供 hero 漸層用，兩種模式維持同色不變)、--accent-ui 圖示/導覽字實際顯示色(深色模式會換亮版避免對比不足)、--accent-deep 深邃同色調(hero漸層深端，承載白字)。第五輪(2026-07-31)整體再降飽和10~15個百分點、微調明度，WCAG對比全數重新驗算(header 4.90~4.92、white-on-hero 5.2+、icon-on-bg 4.3+)，比第四輪的4.6~4.8更寬鬆也更沉靜清新，不再貼著AA下限 */
-  .cat-mac    { --accent-bg:#E4E7ED; --accent-text:#546C8C; --accent-ui:#546C8C; --accent-deep:#1C2B40; }
-  .cat-ipad   { --accent-bg:#E5EBE8; --accent-text:#537160; --accent-ui:#537160; --accent-deep:#203C2C; }
-  .cat-iphone { --accent-bg:#F0E5E0; --accent-text:#955C41; --accent-ui:#955C41; --accent-deep:#472515; }
-  .cat-watch  { --accent-bg:#EDE4E8; --accent-text:#925973; --accent-ui:#925973; --accent-deep:#401C2D; }
+  /* per-category accent tokens：--accent-bg 清新柔霧淡底(圖示晶片用)、--accent-text 清新中調色(僅供 hero 漸層用，兩種模式維持同色不變)、--accent-ui 圖示/導覽字實際顯示色(深色模式會換亮版避免對比不足)、--accent-deep 深邃同色調(hero漸層深端，承載白字)。第六輪(2026-07-31)明顯提升飽和度(S25~51%→S60%)讓四色肉眼可辨的鮮明起來，同時保持WCAG對比(header 4.86~4.99、white-on-hero 5.3+、icon-on-bg 4.19~4.57全數重新驗算) */
+  .cat-mac    { --accent-bg:#DEE7F2; --accent-text:#2E69B8; --accent-ui:#2E69B8; --accent-deep:#0B274C; }
+  .cat-ipad   { --accent-bg:#DEF2E7; --accent-text:#1F7A47; --accent-ui:#1F7A47; --accent-deep:#0B4C27; }
+  .cat-iphone { --accent-bg:#F2E5DE; --accent-text:#A7532A; --accent-ui:#A7532A; --accent-deep:#4C200B; }
+  .cat-watch  { --accent-bg:#F2DEE7; --accent-text:#C03073; --accent-ui:#C03073; --accent-deep:#4C0B29; }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .cat-mac    { --accent-bg:#2A3A50; --accent-ui:#8FB3E0; }
