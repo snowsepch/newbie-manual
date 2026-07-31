@@ -541,10 +541,10 @@
 
   nav.tabbar button.active { color: var(--accent-ui); }
 
-  /* per-category accent tokens：--accent-bg 清新柔霧淡底(圖示晶片用)、--accent-text 清新中調色(僅供 hero 漸層用，兩種模式維持同色不變)、--accent-ui 圖示/導覽字實際顯示色(深色模式會換亮版避免對比不足)、--accent-deep 深邃同色調(hero漸層深端，承載白字)。第六輪(2026-07-31)明顯提升飽和度(S25~51%→S60%)讓四色肉眼可辨的鮮明起來，同時保持WCAG對比(header 4.86~4.99、white-on-hero 5.3+、icon-on-bg 4.19~4.57全數重新驗算) */
+  /* per-category accent tokens：--accent-bg 清新柔霧淡底(圖示晶片用)、--accent-text 清新中調色(僅供 hero 漸層用，兩種模式維持同色不變)、--accent-ui 圖示/導覽字實際顯示色(深色模式會換亮版避免對比不足)、--accent-deep 深邃同色調(hero漸層深端，承載白字)。第七輪(2026-07-31)ipad/iphone兩色再拉開跟原版的差距(ipad改森林翠綠、iphone改更紅的赤陶橙)，mac/watch維持第六輪；WCAG對比header 5.76~5.94、white-on-hero 6.3+，全數重新驗算 */
   .cat-mac    { --accent-bg:#DEE7F2; --accent-text:#2E69B8; --accent-ui:#2E69B8; --accent-deep:#0B274C; }
-  .cat-ipad   { --accent-bg:#DEF2E7; --accent-text:#1F7A47; --accent-ui:#1F7A47; --accent-deep:#0B4C27; }
-  .cat-iphone { --accent-bg:#F2E5DE; --accent-text:#A7532A; --accent-ui:#A7532A; --accent-deep:#4C200B; }
+  .cat-ipad   { --accent-bg:#DEF2E9; --accent-text:#0C6E40; --accent-ui:#0C6E40; --accent-deep:#084528; }
+  .cat-iphone { --accent-bg:#F2E3DE; --accent-text:#AD310B; --accent-ui:#AD310B; --accent-deep:#451608; }
   .cat-watch  { --accent-bg:#F2DEE7; --accent-text:#C03073; --accent-ui:#C03073; --accent-deep:#4C0B29; }
 
   @media (prefers-color-scheme: dark) {
