@@ -27,19 +27,20 @@
   }
 
   /* ---------- 深色模式：跟隨系統(除非明確指定 light) 或 ?theme=dark 強制指定 ---------- */
+  /* 第二輪(2026-07-31)改用中性黑灰階(參考Apple HIG dark mode慣用值)，不要偏暖咖啡色調；WCAG重新驗算：ink對body-bg 16.73、sub-ink對card-bg 6.83、tertiary-ink對card-bg 4.63(全數通過AA 4.5下限)，四分類accent-ui對新card-bg也重新驗算6.26~8.16全數通過 */
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --header-bg: #211D18; --body-bg: #17140F; --frame-bg: #0F0D0A; --card-bg: #241F19;
-      --ink: #F3EEE4; --sub-ink: #B8AEA0; --tertiary-ink: #948B7C;
-      --line: #322C24; --card-line: #2B251E; --shadow-soft: rgba(0, 0, 0, 0.35);
-      --frame-border: #3A332A; --sheet-tint: #2B251E; --sheet-handle: #3A332A;
+      --header-bg: #1C1C1E; --body-bg: #121212; --frame-bg: #000000; --card-bg: #262628;
+      --ink: #F2F2F2; --sub-ink: #AEAEB2; --tertiary-ink: #8E8E93;
+      --line: #333335; --card-line: #2E2E30; --shadow-soft: rgba(0, 0, 0, 0.45);
+      --frame-border: #3A3A3C; --sheet-tint: #2C2C2E; --sheet-handle: #48484A;
     }
   }
   :root[data-theme="dark"] {
-    --header-bg: #211D18; --body-bg: #17140F; --frame-bg: #0F0D0A; --card-bg: #241F19;
-    --ink: #F3EEE4; --sub-ink: #B8AEA0; --tertiary-ink: #948B7C;
-    --line: #322C24; --card-line: #2B251E; --shadow-soft: rgba(0, 0, 0, 0.35);
-    --frame-border: #3A332A; --sheet-tint: #2B251E; --sheet-handle: #3A332A;
+    --header-bg: #1C1C1E; --body-bg: #121212; --frame-bg: #000000; --card-bg: #262628;
+    --ink: #F2F2F2; --sub-ink: #AEAEB2; --tertiary-ink: #8E8E93;
+    --line: #333335; --card-line: #2E2E30; --shadow-soft: rgba(0, 0, 0, 0.45);
+    --frame-border: #3A3A3C; --sheet-tint: #2C2C2E; --sheet-handle: #48484A;
   }
 
   [data-text="large"] { --fs-scale: 1.15; }
