@@ -1098,13 +1098,53 @@
     cb();
   }
 
-  // 支援從工具站帶入的個人化參數：?cat= 預設分類、?name= 暱稱、?store= 門市名稱、?note= 自訂顯示文字、?theme= 深淺主題、?text= 文字大小
+  // 支援從工具站帶入的個人化參數：?cat= 預設分類、?model= 預設機型、?hide= 隱藏指定分類、?name= 暱稱、?store= 門市名稱、?note= 自訂顯示文字、?theme= 深淺主題、?text= 文字大小
   (function initFromQuery() {
     const params = new URLSearchParams(location.search);
 
-    const cat = params.get("cat");
-    if (CATEGORIES.includes(cat)) {
-      const tab = document.querySelector(`nav.tabbar .cat-tab[data-target="${cat}"]`);
+    // ?hide=mac,watch 隱藏指定分類分頁（若會隱藏到全部分類，視為無效直接忽略，避免工具打開後無法使用）
+    const hideCats = (params.get("hide") || "")
+      .split(",").map(s => s.trim()).filter(c => CATEGORIES.includes(c));
+    const visibleCats = hideCats.length && hideCats.length < CATEGORIES.length
+      ? CATEGORIES.filter(c => !hideCats.includes(c))
+      : CATEGORIES;
+
+    if (visibleCats !== CATEGORIES) {
+      hideCats.forEach(c => {
+        const tab = document.querySelector(`nav.tabbar .cat-tab[data-target="${c}"]`);
+        const page = document.querySelector(`.category-page[data-category="${c}"]`);
+        if (tab) tab.style.display = "none";
+        if (page) page.style.display = "none";
+      });
+    }
+
+    // ?model= 直接指定預設機型（會自動找出所屬分類並切換，優先權高於 ?cat=）
+    const modelParam = params.get("model");
+    let targetCat = null, targetModel = null;
+    if (modelParam) {
+      for (const c of CATEGORIES) {
+        const found = DATA[c].find(m => m.id === modelParam);
+        if (found) { targetCat = c; targetModel = found; break; }
+      }
+    }
+
+    let didSetPage = false;
+    if (targetCat && visibleCats.includes(targetCat)) {
+      const tab = document.querySelector(`nav.tabbar .cat-tab[data-target="${targetCat}"]`);
+      if (tab) { tab.click(); selectModel(targetCat, targetModel.id); didSetPage = true; }
+    }
+
+    if (!didSetPage) {
+      const cat = params.get("cat");
+      if (CATEGORIES.includes(cat) && visibleCats.includes(cat)) {
+        const tab = document.querySelector(`nav.tabbar .cat-tab[data-target="${cat}"]`);
+        if (tab) { tab.click(); didSetPage = true; }
+      }
+    }
+
+    if (!didSetPage && !visibleCats.includes("mac")) {
+      // 預設分類 mac 被隱藏時，自動切到第一個可見分類
+      const tab = document.querySelector(`nav.tabbar .cat-tab[data-target="${visibleCats[0]}"]`);
       if (tab) tab.click();
     }
 
