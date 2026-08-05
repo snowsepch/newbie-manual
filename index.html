@@ -52,6 +52,11 @@
   }
 
   [data-text="large"] { --fs-scale: 1.15; }
+  [data-text="xlarge"] { --fs-scale: 1.3; }   /* 第三檔字級，給站著看手機、光線不好的現場情境 */
+
+  /* ---------- 精簡模式 ?view=quick：老手現場只要「特色＋話術」，藏掉規格 chips 與 Demo 情境 ---------- */
+  [data-view="quick"] .spec-row { display: none; }
+  [data-view="quick"] [data-section="demo"] { display: none; }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
@@ -971,8 +976,8 @@
           </div>
         </div>
 
-        <div class="section-label"><i class="ph ph-star-four"></i>3 個記憶特色</div>
-        <div class="feature-grid">
+        <div class="section-label" data-section="features"><i class="ph ph-star-four"></i>3 個記憶特色</div>
+        <div class="feature-grid" data-section="features">
           ${m.keywords.map(k => `
             <div class="feature-tile">
               <div class="tile-icon"><i class="ph ${k.icon}"></i></div>
@@ -982,11 +987,11 @@
           `).join("")}
         </div>
 
-        <div class="section-label"><i class="ph ph-lightbulb"></i>Demo 情境</div>
-        <div class="demo-box">${m.demo}</div>
+        <div class="section-label" data-section="demo"><i class="ph ph-lightbulb"></i>Demo 情境</div>
+        <div class="demo-box" data-section="demo">${m.demo}</div>
 
-        <div class="section-label"><i class="ph ph-chat-circle-text"></i>30 秒銷售話術</div>
-        <div class="script-box">
+        <div class="section-label" data-section="script"><i class="ph ph-chat-circle-text"></i>30 秒銷售話術</div>
+        <div class="script-box" data-section="script">
           <p>${m.script}</p>
           <button class="copy-btn" type="button" data-copy-text="${m.script.replace(/"/g, "&quot;")}">
             <i class="ph ph-copy"></i>複製話術
@@ -1107,7 +1112,7 @@
     cb();
   }
 
-  // 支援從工具站帶入的個人化參數：?cat= 預設分類、?model= 預設機型、?hide= 隱藏指定分類、?name= 暱稱、?store= 門市名稱、?note= 自訂顯示文字、?theme= 深淺主題、?text= 文字大小
+  // 支援從工具站帶入的個人化參數：?cat= 預設分類、?model= 預設機型、?hide= 隱藏指定分類、?name= 暱稱、?store= 門市名稱、?note= 自訂顯示文字、?theme= 深淺主題、?text= 文字大小、?view= 精簡模式
   (function initFromQuery() {
     const params = new URLSearchParams(location.search);
 
@@ -1191,8 +1196,13 @@
     }
 
     const text = params.get("text");
-    if (text === "large") {
-      document.documentElement.dataset.text = "large";
+    if (text === "large" || text === "xlarge") {
+      document.documentElement.dataset.text = text;
+    }
+
+    // ?view=quick 精簡模式：藏掉規格 chips 與 Demo 情境，只留特色＋話術
+    if (params.get("view") === "quick") {
+      document.documentElement.dataset.view = "quick";
     }
   })();
 </script>
